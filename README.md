@@ -52,7 +52,7 @@ This platform is intended for:
 
 Project webpage:
 
-https://your-website-link-here
+https://github.com/your3dassets/your3dassets.github.io.git
 
 ---
 
@@ -65,5 +65,5 @@ More asset categories and features will be added over time.
 
 ## Author
 
-Name: Your Name
-GitHub: https://github.com/yourusername
+Name: Sapan Das <br>
+GitHub: https://your3dassets.github.io
