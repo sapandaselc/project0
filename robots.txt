@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
+# Block unnecessary files (optional safety)
+Disallow: /*.zip$
+Disallow: /*.7z$
+Disallow: /*.blend$
+
+# Sitemap location
 Sitemap: https://your3dassets.github.io/sitemap.xml
