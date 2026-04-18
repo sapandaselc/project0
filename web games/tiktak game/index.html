@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tic Tac Toe</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container" role="main">
+    <h1>Tic Tac Toe</h1>
+
+    <!-- ===== MENU SCREEN ===== -->
+    <section id="menuScreen" class="menu-screen active">
+      <h2>Main Menu</h2>
+      <button id="startGameBtn" class="btn">Start Game</button>
+      <button id="resetScoreBtnMenu" class="btn ghost">Reset Scores</button>
+    </section>
+
+    <!-- ===== PLAYER NAMES POPUP ===== -->
+    <div id="playerNamePopup" class="popup hidden">
+      <div class="popup-content">
+        <h2>Enter Player Names</h2>
+        <input type="text" id="playerXName" placeholder="Player X Name" />
+        <input type="text" id="playerOName" placeholder="Player O Name" />
+        <div class="popup-buttons">
+          <button id="startWithNamesBtn" class="btn">Start Game</button>
+          <button id="cancelNameBtn" class="btn ghost">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== GAME SCREEN ===== -->
+    <section id="gameScreen" class="game-screen hidden">
+      <section class="scoreboard">
+        <div><span id="playerXDisplay">Player X</span>: <span id="scoreX">0</span></div>
+        <div><span id="playerODisplay">Player O</span>: <span id="scoreO">0</span></div>
+        <div>Ties: <span id="scoreTies">0</span></div>
+      </section>
+
+      <div class="status" id="status">X's turn</div>
+
+      <div id="board" class="board">
+        <button class="cell" data-index="0"></button>
+        <button class="cell" data-index="1"></button>
+        <button class="cell" data-index="2"></button>
+        <button class="cell" data-index="3"></button>
+        <button class="cell" data-index="4"></button>
+        <button class="cell" data-index="5"></button>
+        <button class="cell" data-index="6"></button>
+        <button class="cell" data-index="7"></button>
+        <button class="cell" data-index="8"></button>
+      </div>
+
+      <section class="controls">
+        <button id="pauseBtn" class="btn">Pause</button>
+        <button id="restartBtn" class="btn">Restart Round</button>
+        <button id="backToMenuBtn" class="btn ghost">Main Menu</button>
+      </section>
+    </section>
+
+    <!-- ===== PAUSE SCREEN ===== -->
+    <section id="pauseScreen" class="menu-screen hidden">
+      <h2>Game Paused</h2>
+      <button id="resumeBtn" class="btn">Resume</button>
+      <button id="restartBtnPause" class="btn">Restart</button>
+      <button id="backMenuPause" class="btn ghost">Main Menu</button>
+    </section>
+
+    <!-- ===== WINNING POPUP ===== -->
+    <div id="popup" class="popup hidden">
+      <div class="popup-content">
+        <h2 id="popupMessage">Player X Wins!</h2>
+        <div class="popup-buttons">
+          <button id="popupRestartBtn" class="btn">Restart Round</button>
+          <button id="popupMenuBtn" class="btn ghost">Main Menu</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

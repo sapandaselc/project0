@@ -1,54 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<body class="game-page">
-
-<h1 class="game-title">🎮 My First Unity Game</h1>
-
 <head>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Apps – Your 3D Assets</title>
+<link rel="icon" type="image/png" href="icon.png">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d0f; color: #f1f1f3; font-family: Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+  img { display: block; max-width: 100%; }
+
+  /* Topbar */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; gap: 14px;
+    padding: 0 24px; height: 60px;
+    background: rgba(13,13,15,0.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .topbar-back {
+    display: flex; align-items: center; gap: 8px;
+    color: #9ca3af; font-size: 0.88rem; font-weight: 500;
+    padding: 6px 12px; border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .topbar-back:hover { background: #18181b; color: #f1f1f3; }
+  .topbar-title { font-weight: 700; font-size: 1rem; flex: 1; }
+  .topbar-search {
+    display: flex; align-items: center; gap: 8px;
+    background: #18181b; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 99px; padding: 7px 16px; width: 220px;
+  }
+  .topbar-search input {
+    background: none; border: none; outline: none;
+    color: #f1f1f3; font-size: 0.85rem; width: 100%;
+  }
+  .topbar-search input::placeholder { color: #6b7280; }
+  .search-svg { width: 15px; height: 15px; color: #6b7280; flex-shrink: 0; }
+
+  /* Page wrap */
+  .page { max-width: 960px; margin: 0 auto; padding: 36px 20px 60px; }
+
+  /* Section header */
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .section-head h2 { font-size: 1.1rem; font-weight: 700; }
+  .section-head span { font-size: 0.8rem; color: #6b7280; }
+
+  /* Featured card */
+  .featured {
+    position: relative; border-radius: 20px; overflow: hidden;
+    background: linear-gradient(135deg, #0f1a2e 0%, #1a0f2e 50%, #0f1a2e 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 36px 32px; margin-bottom: 44px;
+    display: flex; align-items: center; gap: 28px;
+  }
+  .featured-icon {
+    width: 100px; height: 100px; border-radius: 22px; object-fit: cover;
+    flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  .featured-icon-emoji {
+    width: 100px; height: 100px; border-radius: 22px; flex-shrink: 0;
+    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  .featured-badge {
+    display: inline-block; padding: 3px 10px; border-radius: 99px;
+    background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3);
+    color: #fbbf24; font-size: 0.68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
+  }
+  .featured-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+  .featured-dev { font-size: 0.85rem; color: #9ca3af; margin-bottom: 10px; }
+  .featured-tags { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+  .tag {
+    font-size: 0.7rem; font-weight: 600; padding: 3px 10px; border-radius: 99px;
+    border: 1px solid rgba(255,255,255,0.1); color: #9ca3af; background: rgba(255,255,255,0.04);
+    text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .featured-stars { color: #fbbf24; font-size: 0.85rem; margin-bottom: 16px; }
+  .btn-install {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 28px; background: #00c8e0; color: #000;
+    font-weight: 700; font-size: 0.88rem; border: none; border-radius: 99px;
+    cursor: pointer; transition: background 0.2s, transform 0.15s;
+  }
+  .btn-install:hover { background: #0097a7; transform: translateY(-1px); }
+  .featured-glow {
+    position: absolute; top: -40px; right: -40px;
+    width: 220px; height: 220px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,200,224,0.12), transparent 70%);
+    pointer-events: none;
+  }
+
+  /* App grid */
+  .app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .app-card {
+    display: flex; align-items: center; gap: 14px;
+    background: #18181b; border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; padding: 16px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .app-card:hover { border-color: rgba(0,200,224,0.25); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .app-card-icon {
+    width: 62px; height: 62px; border-radius: 14px; object-fit: cover;
+    flex-shrink: 0; border: 1px solid rgba(255,255,255,0.08);
+  }
+  .app-card-icon-emoji {
+    width: 62px; height: 62px; border-radius: 14px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; border: 1px solid rgba(255,255,255,0.08);
+  }
+  .app-card-info { flex: 1; min-width: 0; }
+  .app-card-name { font-size: 0.93rem; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .app-card-dev { font-size: 0.75rem; color: #6b7280; margin-bottom: 5px; }
+  .app-card-row { display: flex; align-items: center; gap: 8px; }
+  .app-card-stars { color: #fbbf24; font-size: 0.72rem; }
+  .app-card-cat { font-size: 0.68rem; color: #9ca3af; }
+  .btn-get {
+    flex-shrink: 0; padding: 8px 18px;
+    background: rgba(0,200,224,0.12); color: #00c8e0;
+    border: 1px solid rgba(0,200,224,0.25); border-radius: 99px;
+    font-size: 0.8rem; font-weight: 700; cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-get:hover { background: #00c8e0; color: #000; }
+
+  /* Divider */
+  .divider { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 36px 0; }
+
+  /* Footer */
+  .footer { text-align: center; padding: 32px 16px; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 20px; }
+  .footer a { font-size: 0.82rem; color: #6b7280; margin: 0 10px; transition: color 0.2s; }
+  .footer a:hover { color: #f1f1f3; }
+  .footer p { font-size: 0.75rem; color: #4b5563; margin-top: 12px; }
+
+  @media (max-width: 600px) {
+    .topbar-search { display: none; }
+    .featured { flex-direction: column; padding: 24px 20px; }
+    .featured-icon, .featured-icon-emoji { width: 80px; height: 80px; }
+    .featured-name { font-size: 1.2rem; }
+    .page { padding: 24px 14px 48px; }
+  }
+</style>
 </head>
+<body>
 
-<a href="index.html">
-    <button class="back-btn">⬅ Back to Home</button>
-</a> 
+<div class="topbar">
+  <a href="index.html" class="topbar-back">
+    &#8592; Your 3D Assets
+  </a>
+  <span class="topbar-title">My Apps</span>
+  <div class="topbar-search">
+    <svg class="search-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" placeholder="Search apps...">
+  </div>
+</div>
 
+<div class="page">
 
-<div class="game-card neon">
+  <!-- Featured -->
+  <div class="section-head">
+    <h2>Featured</h2>
+    <span>Editor's pick</span>
+  </div>
 
-  <img src="assets/sdlogo.jpeg" alt="Unity game logo" class="game-logo">
-
-  <h2>My First Unity Game</h2>
-
-  <p class="game-info">
-    Version 1.0 • Android Release <br>
-    <span>v2.0 coming soon</span>
-  </p>
-
-  <p class="game-desc">
-    Experience my first Unity game built with creativity and learning. 
-    Designed for Android gamers and indie development exploration.
-  </p>
-
-  <a href="https://drive.google.com/file/d/1cGqebAULU28Cl30XTEaf2ieB18fYRQPv/view?usp=sharing" target="_blank">
-    <button class="download-btn">⬇ Download Game</button>
+  <a href="gamesandapps/plaane/game-plane-shooter.html">
+    <div class="featured">
+      <div class="featured-glow"></div>
+      <img src="gamesandapps/plaane/planrgamelogo.jpeg" alt="Plane Shooter" class="featured-icon">
+      <div>
+        <div class="featured-badge">&#9733; Featured</div>
+        <div class="featured-name">Plane Shooter</div>
+        <div class="featured-dev">Sapan Das &bull; Action / Arcade</div>
+        <div class="featured-tags">
+          <span class="tag">Android</span>
+          <span class="tag">Free</span>
+          <span class="tag">Arcade</span>
+        </div>
+        <div class="featured-stars">&#9733;&#9733;&#9733;&#9733;&#9734; &nbsp;4.0</div>
+        <button class="btn-install">&#8659;&nbsp; View &amp; Download</button>
+      </div>
+    </div>
   </a>
 
-  <p class="game-platform">📱 Android Only</p>
+  <hr class="divider">
+
+  <!-- All Apps -->
+  <div class="section-head">
+    <h2>All Apps</h2>
+    <span>2 apps</span>
+  </div>
+
+  <div class="app-grid">
+
+    <a href="gamesandapps/plaane/game-plane-shooter.html">
+      <div class="app-card">
+        <img src="gamesandapps/plaane/planrgamelogo.jpeg" alt="Plane Shooter" class="app-card-icon">
+        <div class="app-card-info">
+          <div class="app-card-name">Plane Shooter</div>
+          <div class="app-card-dev">Sapan Das</div>
+          <div class="app-card-row">
+            <span class="app-card-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+            <span class="app-card-cat">Action &bull; Free</span>
+          </div>
+        </div>
+        <button class="btn-get">View</button>
+      </div>
+    </a>
+
+    <a href="gamesandapps/iotapp/game-iot-light.html">
+      <div class="app-card">
+        <div class="app-card-icon-emoji" style="background: linear-gradient(135deg, #1a2f1a, #166534);">&#128161;</div>
+        <div class="app-card-info">
+          <div class="app-card-name">IoT Smart Light</div>
+          <div class="app-card-dev">Sapan Das</div>
+          <div class="app-card-row">
+            <span class="app-card-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+            <span class="app-card-cat">Utilities &bull; Free</span>
+          </div>
+        </div>
+        <button class="btn-get">View</button>
+      </div>
+    </a>
+
+  </div>
 
 </div>
 
-<script>
-  atOptions = {
-    'key' : 'ccedaf89ba508f2e103af14f2d9f1587',
-    'format' : 'iframe',
-    'height' : 90,
-    'width' : 728,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highperformanceformat.com/ccedaf89ba508f2e103af14f2d9f1587/invoke.js"></script>
-
+<footer class="footer">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <p>&copy; 2026 Your 3D Assets &mdash; Sapan Das</p>
+</footer>
 
 </body>
 </html>
